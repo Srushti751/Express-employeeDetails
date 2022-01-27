@@ -56,7 +56,8 @@ const server = http.createServer((req,res)=>{
             })
         })
         }
- 
+    
+
     else if(req.url=="/"  )
     {
         const emp = loadJSON('employee.json')
@@ -86,6 +87,8 @@ const server = http.createServer((req,res)=>{
             <th scope="col">Age</th>
             <th scope="col">City</th>
             <th scope="col">Department</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Update</th>
            
      
           </tr>
@@ -95,6 +98,8 @@ const server = http.createServer((req,res)=>{
                     <th scope="col">${data[ot].age}</th>
                     <th scope="col">${data[ot].city}</th>
                     <th scope="col">${data[ot].department}</th>
+                    <th scope="col"><a href="/empname/${data[ot].name}" class="btn btn-danger">Delete</a></th>
+                    <th scope="col"><a href="/update" class="btn btn-success">Update</a></th>
              
                   </tr>
                 </table>
@@ -107,6 +112,20 @@ const server = http.createServer((req,res)=>{
    
         res.end()
 
+    }
+
+    else if(req.method==="GET" && req.url=="/empname/:name"  ){
+      let n = req.params.name
+      const detail = loadJSON('employee.json')
+      const jsondata = JSON.stringify(detail)
+      const newdetails = detail.filter(item=>item.name!==n)
+      console.log(newdetails)
+      detail.push(newdetails)
+      saveJSON('employee.json',newdetails)
+
+      res.end("done")
+    
+     
     }
 })
 
